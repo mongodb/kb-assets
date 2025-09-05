@@ -21,7 +21,7 @@ const DEST_GROUP_ID   = 'your_dest_project_id';          // Project ID (groupId)
 
 // === DEFAULT PASSWORD ===
 
-const TEMP_PASSWORD = 'Temp@1234';                       // Default password to assign to users during creation in destination (can be overridden by env variable)
+const TEMP_PASSWORD = 'your_default_password';                       // Default password to assign to users during creation in destination (can be overridden by env variable)
 
 // === ATLAS API CONFIGURATION ===
 
