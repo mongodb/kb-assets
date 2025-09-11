@@ -23,13 +23,17 @@ Before using this tool, ensure you have:
 1. **Clone or Download the Repository**
 
    ```bash
-   git clone https://github.com/mongodb/kb-assets/migrate-users-between-project
-   cd migrate-users
+   git clone --filter=blob:none --sparse https://github.com/mongodb/kb-assets.git
+   cd kb-assets
+   git sparse-checkout set migrate-users-between-project
+   cd migrate-users-between-project
+   ```
   
 2. **Install Dependencies**
 
    ```bash
    npm install
+   ```
 
 3. **Configure Your Environment**
 
@@ -39,10 +43,12 @@ Edit the relevant variables inside config.js:
 - privateKey
 - sourceProjectId
 - destinationProjectId
+- tempPassword
 
 4. **Run the Migration**
    ```bash
-     node runMigrations.js
+   node runMigrations.js
+   ```
 
 
 ### License
