@@ -21,23 +21,37 @@ Before using this tool, ensure you have:
 
 ## 🚀 Getting Started
 
-1. **Clone the Repository or Download the Scripts**
+1. **Download the Migration Scripts**
 
-2. **Install Dependencies**
+   Open your terminal and download all required scripts to your working directory with the following command:
+
+   ```bash
+   curl -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/config.js \
+     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/migrateCustomeRoles.js \
+     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/migrateUsers.js \
+     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/package.json \
+     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/runMigrations.js
+   ```
+
+2. **Install Project Dependencies**
+
+   After downloading, install the required dependencies:
 
    ```bash
    npm install
    ```
 
-3. **Configure Your Environment**
+3. **Configure Script Settings**
 
-   Edit the relevant variables inside config.js:
+   Edit `config.js` to provide your environment-specific values:
 
-   - publicKey
-   - privateKey
-   - sourceProjectId
-   - destinationProjectId
-   - tempPassword
+   - `SOURCE_PUBLIC_KEY`
+   - `SOURCE_PRIVATE_KEY`
+   - `SOURCE_GROUP_ID`
+   - `DEST_PUBLIC_KEY`
+   - `DEST_GROUP_ID`
+   - `DEST_PRIVATE_KEY`
+   - `TEMP_PASSWORD`
 
 4. **Run the Migration**
 
@@ -51,6 +65,7 @@ Before using this tool, ensure you have:
 
 DISCLAIMER
 ----------
+
 Please note: all tools/ scripts in this repo are released for use "AS IS" **without any warranties of any kind**,
 including, but not limited to their installation, use, or performance.  We disclaim any and all warranties, either
 express or implied, including but not limited to any warranty of noninfringement, merchantability, and/ or fitness
