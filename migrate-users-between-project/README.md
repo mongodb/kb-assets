@@ -23,16 +23,6 @@ Before using this tool, ensure you have:
 
 1. **Download the Migration Scripts**
 
-   Open your terminal and download all required scripts to your working directory with the following command:
-
-   ```bash
-   curl -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/config.js \
-     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/migrateCustomeRoles.js \
-     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/migrateUsers.js \
-     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/package.json \
-     -O https://raw.githubusercontent.com/mongodb/kb-assets/5a7ccc4/migrate-users-between-project/runMigrations.js
-   ```
-
 2. **Install Project Dependencies**
 
    After downloading, install the required dependencies:
