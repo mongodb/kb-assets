@@ -1,0 +1,15 @@
+{
+    "name": "newEventGenerator",
+    "type": "SCHEDULED",
+    "config": {
+        "schedule": "*/2 * * * *"
+    },
+    "disabled": true,
+    "event_processors": {
+        "FUNCTION": {
+            "config": {
+                "function_name": "newEventGenerator"
+            }
+        }
+    }
+}

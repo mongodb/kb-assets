@@ -1,0 +1,8 @@
+{
+    "app_id": "functionretry-vohvn",
+    "config_version": 20210101,
+    "name": "FunctionRetry",
+    "location": "IE",
+    "deployment_model": "LOCAL",
+    "environment": "development"
+}
