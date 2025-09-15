@@ -1,0 +1,10 @@
+[
+    {
+        "name": "newEventGenerator",
+        "private": true
+    },
+    {
+        "name": "eventsProcessor",
+        "private": true
+    }
+]
