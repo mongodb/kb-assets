@@ -102,52 +102,52 @@ distinctN('<collection name>', ['field1', 'field2', ... 'fieldN'], { count: "onl
 
 ### Definitions
 
-Let \(d_1, d_2, \dots, d_N\) be the **distinct counts** of each field.
+Let $d_1, d_2, \dots, d_N$ be the **distinct counts** of each field.
 
-Let \(G_i\) be the **number of distinct groups up to layer \(i\)**:
+Let $G_i$ be the **number of distinct groups up to layer $i$**:
 
-\[
-\begin{aligned}
-G_1 &= d_1 \\
-G_2 &= d_1 \cdot d_2 \\
-G_3 &= d_1 \cdot d_2 \cdot d_3 \\
-&\dots \\
-G_N &= d_1 \cdot d_2 \cdot \dots \cdot d_N
-\end{aligned}
-\]
+$$
+\begin{array}{l}
+G_1 = d_1 \\
+G_2 = d_1 \cdot d_2 \\
+G_3 = d_1 \cdot d_2 \cdot d_3 \\
+\vdots \\
+G_N = d_1 \cdot d_2 \cdot \dots \cdot d_N
+\end{array}
+$$
 
 ### Layer Keys Examined
 
 - **Layer 1 (first field):**
 
-\[
+$$
 \text{Layer}_1 = d_1
-\]
+$$
 
-- **Layer \(i\) (for \(i \ge 2\)):**
+- **Layer $i$ (for $i \ge 2$):**
 
-\[
+$$
 \text{Layer}_i = (G_{i-1} - 1) \cdot (d_i + 1) + d_i
-\]
+$$
 
 ### Total Keys Examined
 
-\[
+$$
 \text{Total keys examined} = \sum_{i=1}^{N} \text{Layer}_i
-\]
+$$
 
-### Example: \([3,3,4,3]\)
+### Example: $[3,3,4,3]$
 
-\[
-\begin{aligned}
-G_1 &= 3, \quad G_2 = 3 \cdot 3 = 9, \quad G_3 = 3 \cdot 3 \cdot 4 = 36, \quad G_4 = 3 \cdot 3 \cdot 4 \cdot 3 = 108 \\
-\text{Layer}_1 &= 3 \\
-\text{Layer}_2 &= (3-1) \cdot (3+1) + 3 = 11 \\
-\text{Layer}_3 &= (9-1) \cdot (4+1) + 4 = 44 \\
-\text{Layer}_4 &= (36-1) \cdot (3+1) + 3 = 143 \\
-\text{Total keys examined} &= 3 + 11 + 44 + 143 = 201
-\end{aligned}
-\]
+$$
+\begin{array}{l}
+G_1 = 3, \quad G_2 = 3 \cdot 3 = 9, \quad G_3 = 3 \cdot 3 \cdot 4 = 36, \quad G_4 = 3 \cdot 3 \cdot 4 \cdot 3 = 108 \\[6pt]
+\text{Layer}_1 = 3 \\
+\text{Layer}_2 = (3-1) \cdot (3+1) + 3 = 11 \\
+\text{Layer}_3 = (9-1) \cdot (4+1) + 4 = 44 \\
+\text{Layer}_4 = (36-1) \cdot (3+1) + 3 = 143 \\
+\text{Total keys examined} = 3 + 11 + 44 + 143 = 201
+\end{array}
+$$
 
 ### Helper
 
