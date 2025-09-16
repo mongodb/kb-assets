@@ -140,11 +140,11 @@ $$
 
 $$
 \begin{array}{l}
-G_1 = 3, \quad G_2 = 3 \cdot 3 = 9, \quad G_3 = 3 \cdot 3 \cdot 4 = 36, \quad G_4 = 3 \cdot 3 \cdot 4 \cdot 3 = 108 \\[6pt]
-\text{Layer}_1 = 3 \\
-\text{Layer}_2 = (3-1) \cdot (3+1) + 3 = 11 \\
-\text{Layer}_3 = (9-1) \cdot (4+1) + 4 = 44 \\
-\text{Layer}_4 = (36-1) \cdot (3+1) + 3 = 143 \\
+G_1 = 3, \quad G_2 = 3 \cdot 3 = 9, \quad G_3 = 3 \cdot 3 \cdot 4 = 36, \quad G_4 = 3 \cdot 3 \cdot 4 \cdot 3 = 108 \\\\
+\text{Layer}_1 = 3 \\\\
+\text{Layer}_2 = (3-1) \cdot (3+1) + 3 = 11 \\\\
+\text{Layer}_3 = (9-1) \cdot (4+1) + 4 = 44 \\\\
+\text{Layer}_4 = (36-1) \cdot (3+1) + 3 = 143 \\\\
 \text{Total keys examined} = 3 + 11 + 44 + 143 = 201
 \end{array}
 $$
