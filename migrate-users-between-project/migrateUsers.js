@@ -1,7 +1,7 @@
 
-const config = require('./config');
+import config from './config.js';
 
-const DigestFetchClient = require('digest-fetch').default;
+import DigestFetchClient from 'digest-fetch';
 
 // === SOURCE PROJECT ===
 const SOURCE_PUBLIC_KEY = config.SOURCE_PUBLIC_KEY;

@@ -1,7 +1,5 @@
-
-const config = require('./config');
-
-const DigestFetchClient = require('digest-fetch').default;
+import config from './config.js';
+import DigestFetchClient from 'digest-fetch';
 
 // === SOURCE PROJECT ===
 const SOURCE_PUBLIC_KEY = config.SOURCE_PUBLIC_KEY;
@@ -24,21 +22,30 @@ const destClient = new DigestFetchClient(DEST_PUBLIC_KEY, DEST_PRIVATE_KEY, { al
 // === Fetch all custom roles from source ===
 async function fetchCustomRoles() {
   const url = `${BASE_URL}/groups/${SOURCE_GROUP_ID}/customDBRoles/roles?envelope=false`;
-  const res = await sourceClient.fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: ACCEPT_HEADER,
-    },
-  });
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`❌ Failed to fetch custom roles: ${res.status} - ${text}`);
+  try {
+    const res = await sourceClient.fetch(url, {
+      method: 'GET',
+      headers: { Accept: ACCEPT_HEADER },
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`❌ Failed to fetch custom roles.`);
+      console.error(`   ↳ URL: ${url}`);
+      console.error(`   ↳ Status: ${res.status} ${res.statusText}`);
+      console.error(`   ↳ Response: ${text}`);
+      throw new Error(`Fetch custom roles failed with status ${res.status}`);
+    }
+
+    const json = await res.json();
+    console.log(`🔍 Found ${json.length} custom roles in source project.`);
+    json.forEach(r => console.log(`   • ${r.roleName}`));
+    return json || [];
+  } catch (err) {
+    console.error(`❌ Network/API error while fetching custom roles:`, err);
+    throw err;
   }
-
-  const json = await res.json();
-  console.log(`🔍 Found ${JSON.stringify(json)} custom roles in source project.`);
-  return json || [];
 }
 
 // === Create a role in the destination ===
@@ -50,20 +57,28 @@ async function createCustomRole(role) {
     inheritedRoles: role.inheritedRoles || [],
   };
 
-  const res = await destClient.fetch(url, {
-    method: 'POST',
-    headers: {
-      Accept: ACCEPT_HEADER,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+  try {
+    const res = await destClient.fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: ACCEPT_HEADER,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
-  if (res.ok) {
-    console.log(`✅ Created custom role: ${role.roleName}`);
-  } else {
-    const errText = await res.text();
-    console.error(`❌ Failed to create role ${role.roleName}: ${res.status} ${errText}`);
+    if (res.ok) {
+      console.log(`✅ Created custom role: ${role.roleName}`);
+    } else {
+      const errText = await res.text();
+      console.error(`❌ Failed to create role: ${role.roleName}`);
+      console.error(`   ↳ URL: ${url}`);
+      console.error(`   ↳ Status: ${res.status} ${res.statusText}`);
+      console.error(`   ↳ Response: ${errText}`);
+    }
+  } catch (err) {
+    console.error(`❌ Network/API error while creating role ${role.roleName}:`, err);
+    throw err;
   }
 }
 
@@ -71,7 +86,7 @@ async function createCustomRole(role) {
 (async () => {
   try {
     const roles = await fetchCustomRoles();
-    console.log(`🔍 Found ${roles.length} custom roles to migrate...\n`);
+    console.log(`🔍 Preparing to migrate ${roles.length} custom roles...\n`);
 
     for (const role of roles) {
       await createCustomRole(role);
@@ -79,6 +94,7 @@ async function createCustomRole(role) {
 
     console.log('\n🎉 All custom roles migrated successfully.');
   } catch (err) {
-    console.error('❌ Migration failed:', err.message);
+    console.error('❌ Migration failed with unexpected error:', err);
+    process.exit(1); // fail CI/CD if running in pipeline
   }
 })();
