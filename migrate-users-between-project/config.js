@@ -29,8 +29,7 @@ const ATLAS_API = 'https://cloud.mongodb.com/api/atlas/v2';        // Base URL f
 const ACCEPT_HEADER = 'application/vnd.atlas.2025-03-12+json';     // Accept header to specify the version of the Admin API to use
 
 
-
-module.exports = {
+export default {
   SOURCE_PUBLIC_KEY,
   SOURCE_PRIVATE_KEY,
   SOURCE_GROUP_ID,
