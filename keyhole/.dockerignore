@@ -1,0 +1,8 @@
+**/.git
+**/testdata
+**/*.gz
+vendor/
+dist/
+out/
+scripts/
+keyhole
