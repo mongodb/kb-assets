@@ -6,7 +6,7 @@ mdiag.ps1
 
 ### Description
 
-[mdiag.ps1](https://raw.githubusercontent.com/mongodb/support-tools/master/mdiag-windows/mdiag.ps1) is a utility to gather a wide variety of system and hardware diagnostic information.
+[mdiag.ps1](https://raw.githubusercontent.com/mongodb/kb-assets/main/mdiag-windows/mdiag.ps1) is a utility to gather a wide variety of system and hardware diagnostic information.
 
 ### Usage
 
