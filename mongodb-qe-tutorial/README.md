@@ -1,4 +1,4 @@
-# MongoDB Queryable Encryption Tutorial (Python)  
+# MongoDB Queryable Encryption Tutorial (Python)
 **Automatic Client-Side Field Level Encryption with Azure Key Vault – Including CMK Rotation in Atlas**
 
 ## Overview
@@ -19,7 +19,7 @@ Queryable Encryption allows you to **encrypt sensitive data client side**, perfo
 
 ### Software
 
-- **Python 3**  
+- **Python 3**
 - [MongoDB Atlas Cluster](https://www.mongodb.com/cloud/atlas/register)
 - [PyMongo Driver](https://www.mongodb.com/docs/languages/python/pymongo-driver/current/) (`>=4.4`)
 - [pymongocrypt](https://pypi.org/project/pymongocrypt/) (`>=1.6`)
@@ -27,12 +27,13 @@ Queryable Encryption allows you to **encrypt sensitive data client side**, perfo
 
 ### Cloud Providers (Azure)
 
-- [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) with your **CMK**  
-- [Register your application in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)  
+- [Azure Key Vault](https://learn.microsoft.com/en-us/azure/key-vault/general/overview) with your **CMK**
+- [Register your application in Microsoft Entra ID](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app)
 - Assign the application the **Key Vault Administrator** role, or permissions to wrap/unwrap keys
 
 ### Other Supported KMS Providers
-- AWS, GCP, KMIP, or local (see `.env` placeholders)
+
+- AWS, GCP, KMIP, or local (see the `env_template` file for placeholders)
 
 ---
 
@@ -47,7 +48,9 @@ cd /<your-repo>/mongodb-qe-tutorial
 
 ### 2. Populate Environment Variables
 
-Edit the **.env** file and replace all placeholder values (`<Your ...>`) with your credentials.
+- Create a file in the root of your working directory named `.env`.
+- Copy the contents of the `env_template` into the `.env` file.
+- Edit the **.env** file and replace all placeholder values (`<Your ...>`) with your credentials.
 
 ```bash
 # Azure Example:
@@ -63,7 +66,7 @@ export SHARED_LIB_PATH="/full/path/to/mongo_crypt_v1.so"
 ...
 ```
 
-See `.env` in repo for a full example including other KMS providers.
+See the `env_template` in repo for a full example including other KMS providers.
 
 ### 3. Install Python Dependencies
 
@@ -96,6 +99,7 @@ python insert_encrypted_doc.py
 ```
 
 **Sample output:**
+
 ```plaintext
 Successfully inserted another patient with ssn: 123-45-6789
 {...decrypted document...}
@@ -122,14 +126,16 @@ python rewrap_deks.py
 
 ### Common Issues
 
-- **"Not all keys were satisfied":**  
+- **"Not all keys were satisfied":**
   If demo code is run multiple times without dropping collections, documents may be encrypted under keys that are lost or missing. Drop your vault and collection, restart, and generate keys once.
 
-- **Shared library load errors:**  
-  Example:  
+- **Shared library load errors:**
+  Example:
+
   ```
   Error while opening candidate for crypt_shared dynamic library [/path/mongo_crypt_v1.so]
   ```
+
   - Ensure your library matches your OS and CPU arch (`file mongo_crypt_v1.so`, `uname -a`)
   - Path must be correct and the file must be present
 
