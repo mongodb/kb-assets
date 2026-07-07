@@ -1,0 +1,128 @@
+{% extends "base_home.html" %}
+
+{% block title %}Mongosync Insights - Migration monitoring{% endblock %}
+
+{% block header_title %}Mongosync Insights - Migration monitoring{% endblock %}
+
+{% block head_links %}
+    <link rel="preload" href="https://assets.mongodb-cdn.com/mms/static/font/EuclidCircularA-Regular-WebXL.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://assets.mongodb-cdn.com/mms/static/font/EuclidCircularA-Semibold-WebXL.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/static/css/mi-atlas-home.css">
+{% endblock %}
+
+{% block content %}
+<div class="mi-back"><a href="{{ url_for('hub') }}">&larr; Back to home</a></div>
+<div class="version-info">
+    <h1 style="margin-bottom: 0;">Mongosync Insights <span class="version-tag">v{{ app_version }}</span></h1>
+</div>
+<div class="form-container">
+    <form id="metadataForm" method="post" action="{{ url_for('live.live_monitoring') }}" enctype="multipart/form-data" autocomplete="off">
+        <h2>Migration Monitoring</h2>
+        {{ connection_string_form | safe }}
+        {% if progress_endpoint_configured %}
+        <p><b>Mongosync Progress Endpoint: </b>{{ progress_endpoint_url }}</p>
+        {% else %}
+        <label for="progressHost">Mongosync progress endpoint:</label>
+        <div class="progress-endpoint-row">
+            <input type="text" id="progressHost" name="progressHost" autocomplete="off"
+                placeholder="localhost" class="progress-host-input">
+            <input type="text" id="progressPort" name="progressPort" autocomplete="off"
+                value="27182" placeholder="27182" class="progress-port-input" size="5" maxlength="5">
+        </div><br>
+        {% endif %}
+        <input type="submit" value="Monitor migration">
+        <p>Click the "Monitor migration" button to start monitoring the migration progress in real time.</p>
+    </form>
+
+    <form id="verifierForm" method="post" action="{{ url_for('live.verifier') }}" enctype="multipart/form-data" autocomplete="off">
+        <h2>Migration Verifier</h2>
+        {{ verifier_connection_string_form | safe }}
+        <label for="verifierDbName">Verifier Database Name:</label>
+        <input type="text" id="verifierDbName" name="verifierDbName" size="47" autocomplete="off"
+            placeholder="migration_verification_metadata" value="migration_verification_metadata"><br><br>
+        <input type="submit" value="Monitor Verifier">
+        <p>Click the "Monitor Verifier" button to monitor the <a href="https://github.com/mongodb-labs/migration-verifier" target="_blank">migration-verifier</a> tool progress.</p>
+        <p><small><strong>Note:</strong> Connect to the MongoDB cluster where the migration-verifier writes its metadata (typically the destination cluster).</small></p>
+        <p class="verifier-note">
+            <strong>Note:</strong> If verifying a migration done via mongosync, check if the
+            <a href="https://www.mongodb.com/docs/cluster-to-cluster-sync/current/reference/verification/embedded/" target="_blank">Embedded Verifier</a>
+            can be used, as it is the preferred approach for verification.
+        </p>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function validateMetadataForm() {
+    var connField = document.getElementById('connectionString');
+    var hostField = document.getElementById('progressHost');
+    var portField = document.getElementById('progressPort');
+
+    var connConfigured = connField === null || connField.value.trim() !== '';
+    var hostConfigured = hostField === null || hostField.value.trim() !== '';
+
+    if (!connConfigured && !hostConfigured) {
+        alert("Please provide at least one of the following: MongoDB Connection String or Mongosync Progress Endpoint (or both).");
+        return false;
+    }
+
+    if (hostField && hostConfigured) {
+        var hostPattern = /^[\w\.\-]+$/;
+        if (!hostPattern.test(hostField.value.trim())) {
+            alert("Invalid progress endpoint host. Use a hostname or IP address (e.g., localhost).");
+            return false;
+        }
+        if (portField) {
+            var portValue = portField.value.trim();
+            if (portValue) {
+                var portPattern = /^\d+$/;
+                if (!portPattern.test(portValue)) {
+                    alert("Invalid progress endpoint port. Enter digits only (default 27182).");
+                    return false;
+                }
+                var portNum = parseInt(portValue, 10);
+                if (portNum < 1 || portNum > 65535) {
+                    alert("Invalid progress endpoint port. Must be between 1 and 65535.");
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+function validateVerifierForm() {
+    var connField = document.getElementById('verifierConnectionString');
+    var connConfigured = connField === null || connField.value.trim() !== '';
+
+    if (!connConfigured) {
+        alert("Please provide a MongoDB Connection String for the migration verifier database.");
+        return false;
+    }
+
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var metadataForm = document.getElementById('metadataForm');
+    if (metadataForm) {
+        metadataForm.addEventListener('submit', function(e) {
+            if (!validateMetadataForm()) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    var verifierForm = document.getElementById('verifierForm');
+    if (verifierForm) {
+        verifierForm.addEventListener('submit', function(e) {
+            if (!validateVerifierForm()) {
+                e.preventDefault();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
